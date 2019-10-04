@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" href="reset.css"/>
+    <style type="text/css">
+        #table{margin:30px auto; border-collapse: collapse;}
+        td,th{padding:5px 10px;}
+        button{padding:5px;}
+        .total{font-size:18px; color:darkred; font-weight:800;}
+    </style>
+    <script src="vue2.6.10.js"></script>
+</head>
+<body>
+<div id="demo">
+    <table border="1" cellspacing="0" id="table" >
+        <thead>
+        <tr>
+            <th><input type="checkbox" v-model="output" @click="put">全选</input></th>
+            <th>商品序号</th>
+            <th>商品编号</th>
+            <th>商品名称</th>
+            <th>商品数量</th>
+            <th>商品单价</th>
+            <th>移出</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(item,index) in list" >
+            <td><input type="checkbox" v-model="item.flag" >选择</input></td>
+            <td>{{index+1}}</td>
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td><button style="margin: 0 8px" @click="cut(index)">-</button>{{item.count}}<button style="margin: 0 8px" @click="add(index)">+</button></td>
+            <td>{{item.price}}</td>
+            <td><button @click="Del(index)">删除</button></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr v-if="list.length">
+            <td colspan="7" >总价为：<span class="total">{{money}}</span>元</td>
+        </tr>
+        <tr v-else>
+            <td colspan="7" >此购物车中无商品</td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+<script>
+    new Vue({
+        el:'#demo',
+        data:function () {
+            return{
+                list:[{id:'1', name:'李子园甜牛奶', count:1,price:5.5,flag:false,num:1},
+                    {id:'2', name:'特仑苏纯牛奶', count:1, price:4,flag:false, num:2},
+                    {id:'3', name:'金典纯牛奶', count:1, price:5,flag:false, num:3},
+                    {id:'4', name:'光明纯牛奶', count:1, price:2.5,flag:false,num:4}],
+                current:0,
+                money:0,
+                output:false,
+            }
+        },
+        methods:{
+            Del:function(index){
+                this.list.splice(index,1)
+                this.Count;
+            },
+            add:function (index) {
+                this.list[index].count++
+                this.Count;
+            },
+            cut:function (index) {
+                if(this.list[index].count>1){
+                    this.list[index].count--
+                }
+                this.Count;
+            },
+            put:function(){
+                if (this.output==true){
+                    this.list.forEach(function (item,index) {
+                        item.flag=false
+                    });
+                }else {
+                    this.list.forEach(function (item,index) {
+                        item.flag=true
+                    });
+                }
+            }
+        },
+        computed:{
+            Count:function () {
+                var totalPrice=0;
+                this.list.forEach(function (item,index) {
+                    if (item.flag==true) {
+                        totalPrice += item.count * item.price;
+                    }
+                });
+                this.money =parseFloat(totalPrice);
+            },
+        },
+        watch:{
+            list: {
+                handler: function (newVal) {
+                    this.Count;
+                    var a=0;
+                    this.list.forEach(function (item,index) {
+                        if (item.flag==true){
+                            a +=item.num;
+                        }
+                    });
+                    if (a==10){
+                        this.output=true;
+                    }
+                    else {
+                        this.output=false;
+                    }
+                },
+                deep: true
+            }
+        },
+        created:function(){
+            this.Count;
+        },
+    })
+</script>
+</body>
+</html>

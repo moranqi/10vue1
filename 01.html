@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="vue2.6.10.js"></script>
+    <style type="text/css">
+        *{margin:0px; padding:0px;}
+        body{font-size:14px;}
+        #app{width:1000px; margin:10px auto;}
+        #bigImg{float:left; margin-right:10px;}
+        .item{
+            width:340px;
+            line-height:30px;
+            box-sizing: border-box;
+            background:#f7f7f7;
+            border:1px solid #f7f7f7;
+            margin:10px 0px;
+            float:left;
+        }
+        .item img{vertical-align:middle; margin-right:10px;}
+        .select{ border:1px solid darkred;}
+    </style>
+    <style type="text/css">
+        .imgsmall{
+            width: 50px;
+            height: 50px;
+        }
+        .imgBig{
+            width: 400px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <img id="bigImg" :src="imgBig" :class=['imgBig']>
+    <p>款式选择</p>
+    <div v-for="(item,index) in list" :key="index" :class=['item',{'select':current==index}] @click="doClick(item,index)">
+        <img :src="item.url" :class=['imgsmall']>
+        <span v-html="item.con" ></span>
+    </div>
+</div>
+<script>
+    new Vue({
+        el:"#app",
+        data(){
+            return{
+                list:[{con:'银色 APTX-4869轻薄石英表',url:'https://gd4.alicdn.com/imgextra/i4/644852261/O1CN01jxg6l31SZa1JR7Dd9_!!644852261.jpg'},
+                    {con:'黑色 安室透轻薄石英表',url:'https://gd1.alicdn.com/imgextra/i1/644852261/O1CN01ey5rEK1SZZym5vIRj_!!644852261.jpg'},
+                    {con:'黑色 赤井秀一轻薄石英表',url:'https://gd1.alicdn.com/imgextra/i1/644852261/O1CN01gZUMPs1SZZyhUupVX_!!644852261.jpg'},
+                    {con:'黑色 双面少女轻薄石英表',url:'https://gd4.alicdn.com/imgextra/i4/644852261/O1CN01n8z53f1SZa2vCDGqr_!!644852261.jpg'}],
+                current:0,
+                imgBig:'https://gd4.alicdn.com/imgextra/i4/644852261/O1CN01jxg6l31SZa1JR7Dd9_!!644852261.jpg'
+            }
+        },
+        methods:{
+            doClick(item,index){
+                this.current=index;
+                this.imgBig=item.url;
+            }
+        }
+    })
+</script>
+</body>
+</html>
